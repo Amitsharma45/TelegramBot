@@ -12,9 +12,10 @@ bot.start(ctx => {
   }
 })
 bot.command('/DSA',(ctx)=>{
-    ctx.reply('I am working on this feature!')
+    console.log('in side DSA')
+    return ctx.reply('I am working on this feature!')
 })
-bot.on('sticker',ctx=>ctx.reply('🖥️'))
+bot.on('sticker',(ctx) => {return ctx.reply('🖥️')})
 
 // AWS event handler syntax (https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)
 exports.handler = async event => {
