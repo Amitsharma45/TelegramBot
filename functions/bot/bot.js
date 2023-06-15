@@ -2,10 +2,23 @@ const { Telegraf } = require('telegraf');
 
 const bot = new Telegraf('6021828179:AAHF4vbJFr3zeWBfaTc6bP4lGzlU7Ry7N8o');
 
-bot.start((ctx) => ctx.reply(`Welcome, This is my first Bot!
-/hi
-`));
-bot.command('hi',(ctx)=>{
-    console.log(ctx.message.text)
-    ctx.reply('Hello Bye')})
-bot.launch();
+bot.start(ctx => {
+  console.log("Received /start command")
+  try {
+    return ctx.reply("Hi")
+  } catch (e) {
+    console.error("error in start action:", e)
+    return ctx.reply("Error occured")
+  }
+})
+
+// AWS event handler syntax (https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)
+exports.handler = async event => {
+  try {
+    await bot.handleUpdate(JSON.parse(event.body))
+    return { statusCode: 200, body: "" }
+  } catch (e) {
+    console.error("error in handler:", e)
+    return { statusCode: 400, body: "This endpoint is meant for bot and telegram communication" }
+  }
+}
